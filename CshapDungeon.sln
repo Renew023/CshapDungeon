@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsahpDungeon_ver1", "CsahpD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CShapDungeon_ver3", "CShapDungeon_ver3\CShapDungeon_ver3.csproj", "{CC3401CD-389F-4ACA-B8DE-019F986B7DE4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CshapDungeon_ver3_branch", "CshapDungeon_ver3_branch\CshapDungeon_ver3_branch.csproj", "{8F429F3D-D168-4C47-9253-6C8F93287BF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CshapDungeon_ver4", "CshapDungeon_ver4\CshapDungeon_ver4.csproj", "{F6209B20-FB07-466F-A5A5-2E731D441D46}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{CC3401CD-389F-4ACA-B8DE-019F986B7DE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC3401CD-389F-4ACA-B8DE-019F986B7DE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC3401CD-389F-4ACA-B8DE-019F986B7DE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F429F3D-D168-4C47-9253-6C8F93287BF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F429F3D-D168-4C47-9253-6C8F93287BF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F429F3D-D168-4C47-9253-6C8F93287BF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F429F3D-D168-4C47-9253-6C8F93287BF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6209B20-FB07-466F-A5A5-2E731D441D46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6209B20-FB07-466F-A5A5-2E731D441D46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6209B20-FB07-466F-A5A5-2E731D441D46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6209B20-FB07-466F-A5A5-2E731D441D46}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
