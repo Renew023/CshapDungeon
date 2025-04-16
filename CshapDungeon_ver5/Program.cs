@@ -1,4 +1,6 @@
-﻿namespace CshapDungeon_ver5
+﻿using static System.Net.Mime.MediaTypeNames;
+
+namespace CshapDungeon_ver5
 {
     internal class Program
     {
@@ -87,20 +89,236 @@
 
         //구현 단계
         //
-        //1. 레벨업 기능 추가 : X
-            //던전 클리어 시 레벨업
-            //레벨업 시 기본 공격력 0.5, 방어력 1 증가
-        //2. 던전입장 기능 추가 : X
+        //1. 레벨업 기능 추가 : O
+            //레벨에 대한 정보는 플레이어에게
+            //던전 클리어 시 레벨업 : O
+            //레벨업 시 기본 공격력 0.5, 방어력 1 증가 : O
+        //2. 던전입장 기능 추가 : O PlaceType.Dungeon
+            //난이도 추가 : O
+            //방어력으로 던전 판별 : O
+            //던전 클리어 : O
+            //공격력으로 클리어 골드 : O
+        //3. 채팅창 클리어 Console.Clear
+
+        //6- 챕터에서 직업 추가
+        
+        public enum ItemType
+        {
+            Head = 0, //머리
+            Body, //몸
+            Hand, //손
+            Reggings, //바지
+            Shoes, //발
+            Ring, //반지
+            NeckRing //목걸이
+        }
+        public enum StatType //4주차
+        {
+            Hp = 0,     //체력
+            Atk = 1,    //공격력
+            Def = 2,    //방어력
+
+            Level = 0,  //레벨
+            Name,   //이름
+            Job,  //직업
+            Gold    //골드
+        }
+
+        public class Player
+        {
+            public string name { get; set; } //이름
+            public float[] curStats { get; private set; } = new float[3];
+            public float[] stats { get; set; } = new float[3]
+            { 10, 10, 10 }; //HP, ATK, DEF
+            public Item?[] equipItem = new Item[7];
+            private int Level = 1;
+            private int Exp = 0;
+
+            public void DungeonClear()
+            {
+                Exp += 1;
+                if(Exp == Level)
+                {
+                    Exp = 0;
+                    Level++;
+                    stats[1] += 0.5f;
+                    stats[2] += 1.0f;
+                }
+            }
+
+            public void StatReload(StatType statType, int stat)
+            {
+                float curStat = stats[(int)statType]; //바꾸기 전 값을 받는다.
+                stats[(int)statType] += stat; // 바뀌고 난 후
+
+                float updateStat = stats[(int)statType] - curStat; //바뀌고 난후의 값을 비교한다.
+                CurStatReload(statType, updateStat); //업데이트한 값을 curstat에 넣어준다.
+            }
+
+            public void CurStatReload(StatType statType, float stat)
+            {
+                curStats[(int)statType] += stat;
+            }
+
+
+            public int[] itemStats = new int[3]  //장착 아이템 능력치
+            { 0, 0, 0 };
+
+            public List<Item> inventoryItem = new List<Item>(); //인벤토리 아이템 공간 확보
+
+            public int haveGold = 1000;
+
+            public void ItemAdd(Item item)
+            {
+                inventoryItem.Add(item);
+            }
+
+            public void IsEquip(ItemType itemType) //해당 부위가 장착이 되었는가 코드
+            {
+                if (equipItem[(int)itemType] != null) //아이템이 해당부위에 착용하고 있다면,
+                {
+                    Equip(equipItem[(int)itemType]); //장비를 해제하고
+                    equipItem[(int)itemType] = null; //비워라 그 공간을.
+                }
+            }
+
+            public void Equip(Item item) //장비 착용
+            {
+                Console.WriteLine("라인 테스트");
+                if (item.isEquip == false) //장비를 착용하지 않았다면, 
+                {
+                    item.isEquip = true; //장비를 착용할 수 있다.
+                    IsEquip(item.itemType); //해당 부위에 장비를 착용했는지 확인, 만약 착용되어있다면 착용을 해제한다.
+                    int itemStat = 0 + item.stat;
+
+                    itemStats[(int)item.itemStatType] += itemStat; //해당 능력치를 플레이어에게 부여한다.\
+                    StatReload(item.itemStatType, item.stat);
+
+                    equipItem[(int)item.itemType] = item;
+                }
+                else
+                {
+                    int itemStat = 0 - item.stat;
+
+                    itemStats[(int)item.itemStatType] += itemStat;
+                    StatReload(item.itemStatType, itemStat);
+                    item.isEquip = false;
+                }
+            }
+        }
+
+        public class Item
+        {
+            public string itemName { get; private set; }
+            public StatType itemStatType { get; private set; }
+            public ItemType itemType;
+            public int stat { get; private set; }
+            public string itemHistory { get; private set; }
+            public int price { get; set; }
+
+            public bool isEquip = false;
+
+            //Item의 값을 참조가 아닌 값형으로 저장하기 위해서는
+            //new Item으로 재선언할 필요가 있는데 데이터를 쉽게 저장하기 위해 선언 함수를 만들어주었다.
+            public Item(Item item)
+            {
+                itemName = item.itemName;
+                itemStatType = item.itemStatType;
+                stat = item.stat;
+                itemHistory = item.itemHistory;
+                price = item.price;
+                itemType = item.itemType;
+            }
+
+            public Item(string newItemName, ItemType newItemType, StatType newItemStatType, int newStat, string newItemHistory, int newprice)
+            {
+                itemName = newItemName;
+                itemType = newItemType;
+                itemStatType = newItemStatType;
+                stat = newStat;
+                itemHistory = newItemHistory;
+                price = newprice;
+            }
+
+            public void ItemInfo()
+            {
+                if (isEquip == true)
+                {
+                    Console.Write("[E] ");
+                }
+                Console.WriteLine($"{itemName} || {itemType} || {itemStatType}: {stat} || {itemHistory} || {price}G");
+            }
+        }
+
+        public enum DungeonStage
+        {
+            Easy = 0,
+            Normal,
+            Hard
+        }
+        
+        static void Main(string[] args)
+        {
+            Player user = new Player();
+            //2. 던전입장 기능 추가 : O //PlaceType.Dungeon
             //난이도 추가 : X
             //방어력으로 던전 판별 : X
             //던전 클리어 : X
             //공격력으로 클리어 골드 : X
-        //3. 채팅창 클리어 Console.Clear
-        
+            void DungeonClear(int dungeon)
+            {
+                float DungeonValue = 0;
+                int clearGold = 0;
 
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Hello, World!");
+                switch (dungeon)
+                {
+                    case (int)DungeonStage.Easy:
+                        DungeonValue = 5;
+                        clearGold = 1000;
+                        break;
+                    case (int)DungeonStage.Normal:
+                        DungeonValue = 11;
+                        clearGold = 1700;
+                        break;
+
+                    case (int)DungeonStage.Hard:
+                        DungeonValue = 17;
+                        clearGold = 2500;
+                        break;
+                }
+
+                float def = user.curStats[(int)StatType.Def];
+                float atk = user.curStats[(int)StatType.Atk];
+                bool isClear = false;
+                if (def >= 5)
+                {
+                    isClear = true;
+                }
+                else
+                {
+                    Random rand = new Random();
+                    float fail = rand.Next(0, 100);
+                    if (fail < 40)
+                    {
+                        user.curStats[(int)StatType.Hp] -= 50;
+                    }
+                }
+                if (isClear == true)
+                {
+                    Random rand = new Random();
+                    float damage = rand.Next(20, 35) + 1 - (def - 5);
+                    user.curStats[(int)StatType.Hp] -= damage;
+
+                    int percent = rand.Next(10, 20); // 1, 2
+                    user.haveGold = clearGold * (int)(atk * percent * 0.1f);
+                }
+            }
+
+            void Dungeon()
+            {
+                int num = int.Parse(Console.ReadLine());
+                DungeonClear(num);
+            }
         }
     }
 }

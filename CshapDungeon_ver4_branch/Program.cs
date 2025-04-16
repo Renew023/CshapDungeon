@@ -84,19 +84,7 @@
             public int[] curStats { get; private set; } = new int[3];
             public int[] stats { get; set; } = new int[3]
             { 10, 10, 10 }; //HP, ATK, DEF
-            public Item[] isEquip = new Item[7];
-
-
-            public void IsEquip(ItemType itemType) //해당 부위가 장착이 되었는가 
-            {
-                if (isEquip[(int)itemType] != null)
-                {
-                    Equip(isEquip[(int)itemType]);
-                    isEquip[(int)itemType] = null;
-                }
-            }
-
-
+            public Item?[] equipItem = new Item[7];
 
             public void StatReload(StatType statType, int stat)
             {
@@ -125,18 +113,28 @@
                 inventoryItem.Add(item);
             }
 
+            public void IsEquip(ItemType itemType) //해당 부위가 장착이 되었는가 코드
+            {
+                if (equipItem[(int)itemType] != null) //아이템이 해당부위에 착용하고 있다면,
+                {
+                    Equip(equipItem[(int)itemType]); //장비를 해제하고
+                    equipItem[(int)itemType] = null; //비워라 그 공간을.
+                }
+            }
+
             public void Equip(Item item) //장비 착용
             {
+                Console.WriteLine("라인 테스트");
                 if (item.isEquip == false) //장비를 착용하지 않았다면, 
                 {
+                    item.isEquip = true; //장비를 착용할 수 있다.
                     IsEquip(item.itemType); //해당 부위에 장비를 착용했는지 확인, 만약 착용되어있다면 착용을 해제한다.
                     int itemStat = 0 + item.stat;
 
                     itemStats[(int)item.itemStatType] += itemStat; //해당 능력치를 플레이어에게 부여한다.\
                     StatReload(item.itemStatType, item.stat);
 
-                    isEquip[(int)item.itemType] = item;
-                    item.isEquip = true;
+                    equipItem[(int)item.itemType] = item;
                 }
                 else
                 {
@@ -181,6 +179,11 @@
                 GameManager(place);
             }
 
+            void LineTest()
+            {
+                Console.WriteLine("콘솔의 호출 횟수를 확인합니다.");
+            }
+
             void GameManager(PlaceType place)
             {
                 switch (place)
@@ -201,6 +204,10 @@
 
                     case PlaceType.Inventory:
                         Inventory();
+
+                        break;
+                    case PlaceType.Rest:
+                        Rest();
 
                         break;
                 }
@@ -270,6 +277,7 @@
                 Console.WriteLine("1. [상태 보기]");
                 Console.WriteLine("2. [인벤토리]");
                 Console.WriteLine("3. [상점]");
+                Console.WriteLine("4. [휴식처]");
                 Console.Write("\n");
 
                 Console.WriteLine("원하시는 행동을 입력해주세요.");
@@ -309,6 +317,14 @@
                             return;
 
                             break;
+                        case 4:
+                            Console.WriteLine(">> [휴식처]을 선택하셨습니다.");
+                            Console.Write("\n");
+
+                            place = PlaceType.Rest;
+                            return;
+
+                            break;
 
                         default:
                             Console.WriteLine("값을 다시 입력해주십시오");
@@ -325,10 +341,14 @@
                 Console.Write("\n");
 
                 //플레이어의 정보(클래스로 바꿀 예정)
+                //레벨
+                //직업
+                //체, 공, 방
                 for (int i = 0; i < user.stats.Length; i++)
                 {
-                    Console.WriteLine($"{Enum.GetName(typeof(StatType), i)} : {user.curStats[i]} (+{user.itemStats[i]} / {user.stats[i]})");
+                    Console.WriteLine($"[{Enum.GetName(typeof(StatType), i)}] : {user.curStats[i]} / {user.stats[i]} (+{user.itemStats[i]})");
                 }
+                Console.WriteLine($"[현재 골드] {user.haveGold}");
                 Console.Write("\n");
 
                 //선택지
@@ -527,6 +547,8 @@
                                 user.curStats[0] = user.stats[0];
                                 user.haveGold -= 500;
                                 Console.WriteLine("휴식하여 체력을 회복하셨습니다.");
+                                Console.WriteLine($"[남은 돈] {user.haveGold}");
+                                Console.Write("\n");
 
                                 Console.WriteLine("추가적인 회복이 필요하십니까?");
                                 Console.Write("\n");
@@ -549,7 +571,7 @@
                         case 0:
                             Console.WriteLine("[나가기]를 선택하셨습니다.");
                             Console.Write("\n");
-                            //place = PlaceType.Village;
+                            place = PlaceType.Village;
                             return;
 
                             break;
@@ -749,11 +771,13 @@
                             if (user.inventoryItem[indexCheck].isEquip == true)
                             {
                                 user.Equip(user.inventoryItem[indexCheck]);
+                                Console.WriteLine("장비 착용이 해제되었습니다.");
                             }
                             user.haveGold += (int)(user.inventoryItem[indexCheck].price * 0.85f);
 
                             Console.WriteLine($"[{user.inventoryItem[indexCheck].itemName}]의 판매가 성공적으로 완료되었습니다.");
                             user.inventoryItem.RemoveAt(indexCheck);
+
                             break;
                         }
                         else if (check == 0)
