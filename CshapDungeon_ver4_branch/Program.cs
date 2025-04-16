@@ -1,9 +1,28 @@
-﻿using System.Security.Cryptography;
-
-namespace CshapDungeon_ver3_branch
+﻿namespace CshapDungeon_ver4_branch
 {
     internal class Program
     {
+        public enum PlaceType //VillageSection
+        {
+            Village, //마을 
+            Inventory, //인벤토리
+            Shop, //상점
+            Status, //능력치 확인
+            Dungeon, //던전입장
+            Rest //휴식하기
+        }
+
+        //장착개선에 쓰일 코드
+        public enum ItemType
+        {
+            Head = 0, //머리
+            Body, //몸
+            Hand, //손
+            Reggings, //바지
+            Shoes, //발
+            Ring, //반지
+            NeckRing //목걸이
+        }
         public enum StatType //4주차
         {
             Hp = 0,     //체력
@@ -15,21 +34,11 @@ namespace CshapDungeon_ver3_branch
             Job,  //직업
             Gold    //골드
         }
-
-        public enum PlaceType //VillageSection
-        {
-            Village, //마을 
-            Inventory, //인벤토리
-            Shop, //상점
-            Status, //능력치 확인
-            Dungeon, //던전입장
-            Rest //휴식하기
-        }
-
         public class Item
         {
             public string itemName { get; private set; }
             public StatType itemStatType { get; private set; }
+            public ItemType itemType;
             public int stat { get; private set; }
             public string itemHistory { get; private set; }
             public int price { get; set; }
@@ -44,11 +53,14 @@ namespace CshapDungeon_ver3_branch
                 itemStatType = item.itemStatType;
                 stat = item.stat;
                 itemHistory = item.itemHistory;
+                price = item.price;
+                itemType = item.itemType;
             }
 
-            public Item(string newItemName, StatType newItemStatType, int newStat, string newItemHistory, int newprice)
+            public Item(string newItemName, ItemType newItemType, StatType newItemStatType, int newStat, string newItemHistory, int newprice)
             {
                 itemName = newItemName;
+                itemType = newItemType;
                 itemStatType = newItemStatType;
                 stat = newStat;
                 itemHistory = newItemHistory;
@@ -61,15 +73,45 @@ namespace CshapDungeon_ver3_branch
                 {
                     Console.Write("[E] ");
                 }
-                Console.WriteLine($"{itemName} || {itemStatType}: {stat} || {itemHistory} || {price}G");
+                Console.WriteLine($"{itemName} || {itemType} || {itemStatType}: {stat} || {itemHistory} || {price}G");
             }
         }
 
         public class Player
         {
             public string name { get; set; } //이름
-            public int[] stats { get; private set; } = new int[3]
+
+            public int[] curStats { get; private set; } = new int[3];
+            public int[] stats { get; set; } = new int[3]
             { 10, 10, 10 }; //HP, ATK, DEF
+            public Item[] isEquip = new Item[7];
+
+
+            public void IsEquip(ItemType itemType) //해당 부위가 장착이 되었는가 
+            {
+                if (isEquip[(int)itemType] != null)
+                {
+                    Equip(isEquip[(int)itemType]);
+                    isEquip[(int)itemType] = null;
+                }
+            }
+
+
+
+            public void StatReload(StatType statType, int stat)
+            {
+                int curStat = stats[(int)statType]; //바꾸기 전 값을 받는다.
+                stats[(int)statType] += stat; // 바뀌고 난 후
+
+                int updateStat = stats[(int)statType] - curStat; //바뀌고 난후의 값을 비교한다.
+                CurStatReload(statType, updateStat); //업데이트한 값을 curstat에 넣어준다.
+            }
+
+            public void CurStatReload(StatType statType, int stat)
+            {
+                curStats[(int)statType] += stat;
+            }
+
 
             public int[] itemStats = new int[3]  //장착 아이템 능력치
             { 0, 0, 0 };
@@ -87,39 +129,53 @@ namespace CshapDungeon_ver3_branch
             {
                 if (item.isEquip == false) //장비를 착용하지 않았다면, 
                 {
-                    itemStats[(int)item.itemStatType] += item.stat; //해당 능력치를 플레이어에게 부여한다.\
-                    stats[(int)item.itemStatType] += item.stat;
+                    IsEquip(item.itemType); //해당 부위에 장비를 착용했는지 확인, 만약 착용되어있다면 착용을 해제한다.
+                    int itemStat = 0 + item.stat;
+
+                    itemStats[(int)item.itemStatType] += itemStat; //해당 능력치를 플레이어에게 부여한다.\
+                    StatReload(item.itemStatType, item.stat);
+
+                    isEquip[(int)item.itemType] = item;
                     item.isEquip = true;
                 }
                 else
                 {
-                    itemStats[(int)item.itemStatType] -= item.stat;
-                    stats[(int)item.itemStatType] -= item.stat;
+                    int itemStat = 0 - item.stat;
+
+                    itemStats[(int)item.itemStatType] += itemStat;
+                    StatReload(item.itemStatType, itemStat);
                     item.isEquip = false;
                 }
             }
         }
+
         static void Main(string[] args)
         {
-            //변수
             Player user = new Player(); //플레이어 정의
             PlaceType place = new PlaceType(); //장소 정의
             place = PlaceType.Village; //시작 위치 : 마을
 
-            Item[] allItem = new Item[2]; //아이템 초기화 및 선언
-            allItem[0] = new Item("호랑이의 팬티", StatType.Atk, 8, "호랑이의 털로 만든 팬티로 도깨비가 입고다닌다", 500);
-            allItem[1] = new Item("고양이의 수염", StatType.Def, 10, "고양이가 털갈이할 때 실수로 털을 빼버렸다", 200);
+            Item[] allItem = new Item[3]; //아이템 초기화 및 선언
+            allItem[0] = new Item("호랑이의 팬티", ItemType.Reggings, StatType.Atk, 8, "호랑이의 털로 만든 팬티로 도깨비가 입고다닌다", 500);
+            allItem[1] = new Item("고양이의 수염", ItemType.Head, StatType.Def, 10, "고양이가 털갈이할 때 실수로 털을 빼버렸다", 200);
+            allItem[2] = new Item("고양이의 으르렁", ItemType.Head, StatType.Def, 12, "고양이의 으르렁을 따라할 수 있다", 600);
             List<Item> shopItem = new List<Item>();
 
-            //테스트용 아이템 인벤토리 구문
+            for (int i = 0; i < user.stats.Length; i++)
+            {
+                user.curStats[i] = user.stats[i];
+            }
+
             user.ItemAdd(new Item(allItem[0]));
+            user.ItemAdd(new Item(allItem[1]));
+            user.ItemAdd(new Item(allItem[2]));
+
+            //실행구문
             ShopReset();
 
-            //실행 구문
             Intro();
             NameSelect();
 
-            //현재 위치
             while (true)
             {
                 GameManager(place);
@@ -150,6 +206,7 @@ namespace CshapDungeon_ver3_branch
                 }
                 LineTap(15);
             }
+
             void Intro() // 이름 선택
             {
                 Console.WriteLine("스파르타 던전에 오신 것을 환영합니다.");
@@ -270,7 +327,7 @@ namespace CshapDungeon_ver3_branch
                 //플레이어의 정보(클래스로 바꿀 예정)
                 for (int i = 0; i < user.stats.Length; i++)
                 {
-                    Console.WriteLine($"{Enum.GetName(typeof(StatType), i)} : {user.stats[i]} (+{user.itemStats[i]})");
+                    Console.WriteLine($"{Enum.GetName(typeof(StatType), i)} : {user.curStats[i]} (+{user.itemStats[i]} / {user.stats[i]})");
                 }
                 Console.Write("\n");
 
@@ -438,6 +495,82 @@ namespace CshapDungeon_ver3_branch
                 }
             }
 
+            void Rest()
+            {
+                Console.WriteLine("[[휴식처]]");
+                Console.WriteLine("500G를 지불하는 것으로 회복을 할 수 있습니다.");
+                Console.Write("\n");
+                Console.WriteLine($"[[현재 보유금 : {user.haveGold}G]]");
+                Console.Write("\n");
+
+                //선택지
+                Console.WriteLine("1. [휴식하기]");
+                Console.WriteLine("0. [나가기]");
+                Console.Write("\n");
+
+                //플레이어 입력대기
+                Console.WriteLine("원하시는 행동을 선택해주세요.");
+
+                // 값이 잘못될 경우 반복
+                while (true)
+                {
+                    Console.Write(">> ");
+                    int check = int.Parse(Console.ReadLine());
+
+                    switch (check)
+                    {
+                        case 1:
+                            Console.WriteLine("[휴식하기]를 선택하셨습니다.");
+                            Console.Write("\n");
+                            if (true)
+                            {
+                                user.curStats[0] = user.stats[0];
+                                user.haveGold -= 500;
+                                Console.WriteLine("휴식하여 체력을 회복하셨습니다.");
+
+                                Console.WriteLine("추가적인 회복이 필요하십니까?");
+                                Console.Write("\n");
+                                //선택지
+                                Console.WriteLine("1. [휴식하기]");
+                                Console.WriteLine("0. [나가기]");
+                                Console.Write("\n");
+
+                                //플레이어 입력대기
+                                Console.WriteLine("원하시는 행동을 선택해주세요.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("소지금이 부족하여 회복에 실패하셨습니다.");
+                            }
+                            continue;
+
+                            //ItemBuy(); 나중에 아이템 리스트 만들고 제작 예정
+                            break;
+                        case 0:
+                            Console.WriteLine("[나가기]를 선택하셨습니다.");
+                            Console.Write("\n");
+                            //place = PlaceType.Village;
+                            return;
+
+                            break;
+
+                        default:
+                            Console.WriteLine("값을 다시 입력해주십시오");
+                            continue;
+                    }
+                }
+            }
+
+            void ShopReset()
+            {
+                Random rand = new Random();
+                for (int i = 0; i < 9; i++)
+                {
+                    int randomItem = rand.Next(0, allItem.Length);
+                    shopItem.Add(new Item(allItem[randomItem]));
+                }
+            }
+
             void Shop()
             {
                 //창 설명
@@ -456,6 +589,7 @@ namespace CshapDungeon_ver3_branch
 
                 //선택지
                 Console.WriteLine("1. [아이템 구매]");
+                Console.WriteLine("2. [아이템 판매]");
                 Console.WriteLine("0. [나가기]");
                 Console.Write("\n");
 
@@ -475,6 +609,12 @@ namespace CshapDungeon_ver3_branch
                             ShopBuy();
                             //ItemBuy(); 나중에 아이템 리스트 만들고 제작 예정
                             break;
+                        case 2:
+                            Console.WriteLine("[아이템 판매]를 선택하셨습니다.");
+                            Console.Write("\n");
+                            ShopSell();
+                            break;
+
                         case 0:
                             Console.WriteLine("[나가기]를 선택하셨습니다.");
                             Console.Write("\n");
@@ -490,13 +630,12 @@ namespace CshapDungeon_ver3_branch
                 }
             }
 
-            void ShopReset()
+            void ShopOpen()
             {
-                Random rand = new Random();
-                for (int i = 0; i < 9; i++)
+                for (int i = 0; i < shopItem.Count; i++)
                 {
-                    int randomItem = rand.Next(0, allItem.Length);
-                    shopItem.Add(new Item(allItem[randomItem]));
+                    Console.Write($"{i + 1}. ");
+                    shopItem[i].ItemInfo();
                 }
             }
 
@@ -552,6 +691,8 @@ namespace CshapDungeon_ver3_branch
                             {
                                 Console.WriteLine("금액이 부족하여 구매를 실패하셨습니다.");
                             }
+
+
                             Console.Write("\n");
                             break;
                         }
@@ -565,15 +706,71 @@ namespace CshapDungeon_ver3_branch
                 }// while 끝2
             }
 
-            void ShopOpen()
+            void ShopSell()
             {
-                for (int i = 0; i < shopItem.Count; i++)
+                while (true)
                 {
-                    Console.Write($"{i + 1}. ");
-                    shopItem[i].ItemInfo();
+                    //창 설명
+                    Console.WriteLine("[[아이템 판매]]");
+                    Console.WriteLine("아이템을 선택하여 판매하면 정가의 85%를 드립니다.");
+                    Console.Write("\n");
+
+                    //보유 금액
+                    Console.WriteLine($"보유 금액 : {user.haveGold}G");
+                    Console.Write("\n");
+
+                    //보유 아이템
+                    Console.WriteLine("[보유 아이템]");
+                    for (int i = 0; i < user.inventoryItem.Count; i++)
+                    {
+                        Console.Write($"[{i + 1}] ");
+                        user.inventoryItem[i].ItemInfo();
+                    }
+                    LineTap(2);
+
+                    //선택지
+                    Console.WriteLine("판매할 아이템의 번호를 눌러주세요");
+                    Console.WriteLine("0. [나가기]");
+                    Console.Write("\n");
+
+                    //플레이어 입력대기
+                    Console.WriteLine("원하시는 행동을 선택해주세요.");
+
+                    while (true)
+                    {
+                        Console.Write(">> ");
+                        int check = int.Parse(Console.ReadLine());
+
+                        if (check > 0 && check < 10)
+                        {
+
+                            int indexCheck = check - 1;
+
+                            if (user.inventoryItem[indexCheck].isEquip == true)
+                            {
+                                user.Equip(user.inventoryItem[indexCheck]);
+                            }
+                            user.haveGold += (int)(user.inventoryItem[indexCheck].price * 0.85f);
+
+                            Console.WriteLine($"[{user.inventoryItem[indexCheck].itemName}]의 판매가 성공적으로 완료되었습니다.");
+                            user.inventoryItem.RemoveAt(indexCheck);
+                            break;
+                        }
+                        else if (check == 0)
+                        {
+                            Console.WriteLine(">> [나가기]를 선택하셨습니다.");
+                            Console.Write("\n");
+                            return;
+                        }
+                        else
+                        {
+                            Console.WriteLine(">> 값을 다시 입력해주십시오");
+                            continue;
+                        }
+                    }
                 }
             }
-            
+
             //작법 도움 주는 코드
             void LineTap(int line)
             {
