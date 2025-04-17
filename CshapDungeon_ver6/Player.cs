@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,7 +10,7 @@ namespace CshapDungeon_ver6
     internal class Player
     {
         public string name;
-        public Job job;
+        public Job job = Job.NotJob;
 
         public int level = 1;
         public int exp = 0;
@@ -27,8 +28,8 @@ namespace CshapDungeon_ver6
             get { return maxHp; }
             set
             {
+                curHp += value-maxHp;
                 maxHp = value;
-                curHp += value;
             }
         }
 
@@ -37,8 +38,8 @@ namespace CshapDungeon_ver6
             get { return maxAtk; }
             set
             {
+                curAtk += value - maxAtk;
                 maxAtk = value;
-                curAtk += value;
             }
         }
 
@@ -47,8 +48,8 @@ namespace CshapDungeon_ver6
             get { return maxDef; }
             set
             {
+                curDef += value - maxDef;
                 maxDef = value;
-                curDef += value;
             }
         }
 
@@ -101,9 +102,20 @@ namespace CshapDungeon_ver6
 
         public Player()
         {
-            MaxHp = 10;
-            MaxAtk = 10;
-            MaxDef = 10;
+            name = this.name;
+            job = this.job;
+
+            level = this.level;
+            exp = this.exp;
+
+            curHp = this.curHp;
+            curAtk = this.curAtk;
+            curDef = this.curDef;
+            maxHp = this.maxHp;
+            maxAtk = this.maxAtk;
+            maxDef = this.maxDef;
+            haveGold = this.haveGold;
+            inventory = this.inventory;
         }
 
         public Player(Player player)

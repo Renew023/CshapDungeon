@@ -14,6 +14,31 @@ namespace CshapDungeon_ver6
         public int itemHp = 0;
         public int itemDef = 0;
 
+        public Inventory()
+        {
+            Item = this.Item;
+            equipItem = this.equipItem;
+            itemAtk = this.itemAtk;
+            itemHp = this.itemHp;
+            itemDef = this.itemDef;
+        }
+
+        public Inventory(Inventory item)
+        {
+            for(int i = 0; i<item.Item.Count; i++)
+            {
+                Item.Add(item.Item[i]);
+            }
+            for(int i = 0; i<equipItem.Length; i++)
+            {
+                equipItem[i] = item.equipItem[i];
+            }
+            itemAtk = item.itemAtk;
+            itemHp = item.itemHp;
+            itemDef = item.itemDef;
+
+        }
+
         public void ItemAdd(Item item)
         {
             Item.Add(item);

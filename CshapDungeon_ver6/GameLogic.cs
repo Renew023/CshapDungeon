@@ -10,13 +10,14 @@ namespace CshapDungeon_ver6
     {
         Warrior = 1,
         Wizzard,
-        Archor
+        Archor,
+        NotJob
     }
 
     internal class GameLogic : CodeSystem
     {
         //생성자
-        Player user = new Player(); 
+        public Player user = new Player(); 
         bool _isGameOver = false;
         PlaceType place = new PlaceType();
         ItemManager item = new ItemManager();
@@ -106,11 +107,20 @@ namespace CshapDungeon_ver6
                 {
                     case Job.Warrior:
                         Console.WriteLine($"{user.job}을 선택했습니다.");
+                        user.MaxHp = 25;
+                        user.MaxAtk = 10;
+                        user.MaxDef = 10;
                         break;
                     case Job.Wizzard:
                         Console.WriteLine($"{user.job}을 선택했습니다.");
+                        user.MaxHp = 10;
+                        user.MaxAtk = 20;
+                        user.MaxDef = 10;
                         break;
                     case Job.Archor:
+                        user.MaxHp = 15;
+                        user.MaxAtk = 15;
+                        user.MaxDef = 10;
                         Console.WriteLine($"{user.job}을 선택했습니다.");
                         break;
                     default:
@@ -196,8 +206,9 @@ namespace CshapDungeon_ver6
         {
             place = PlaceType.Village;
             shop.ShopReset(item.allItem);
-            Login();
+            user.job = Job.NotJob;
         }
+        
 
         public GameLogic()
         {
