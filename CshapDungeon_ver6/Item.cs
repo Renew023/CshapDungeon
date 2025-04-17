@@ -16,13 +16,6 @@
         //new Item으로 재선언할 필요가 있는데 데이터를 쉽게 저장하기 위해 선언 함수를 만들어주었다.
         public Item()
         {
-            itemName = (string)this.itemName;
-            itemStatType = (StatType)this.itemStatType;
-            itemType = (ItemType)this.itemType;
-            stat = (int)this.stat;
-            itemHistory = (string)this.itemHistory;
-            price = (int)this.price;
-            isEquip = (bool)this.isEquip;
         }
 
         public Item(Item item)

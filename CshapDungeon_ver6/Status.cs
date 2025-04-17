@@ -17,7 +17,6 @@ namespace CshapDungeon_ver6
             Console.Write("\n");
 
             user.ShowStatus();
-            Console.WriteLine($"[현재 골드] {user.haveGold}");
             Console.Write("\n");
         }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CshapDungeon_ver6
 {
-    internal class Village
+    internal class Village 
     {
         public void Show()
         {

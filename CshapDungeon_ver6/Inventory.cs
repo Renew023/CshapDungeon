@@ -16,11 +16,6 @@ namespace CshapDungeon_ver6
 
         public Inventory()
         {
-            Item = this.Item;
-            equipItem = this.equipItem;
-            itemAtk = this.itemAtk;
-            itemHp = this.itemHp;
-            itemDef = this.itemDef;
         }
 
         public Inventory(Inventory item)
@@ -38,6 +33,8 @@ namespace CshapDungeon_ver6
             itemDef = item.itemDef;
 
         }
+
+
 
         public void ItemAdd(Item item)
         {

@@ -23,7 +23,7 @@ namespace CshapDungeon_ver6
         public float maxDef;
         public int haveGold = 1000;
 
-        public float MaxHp
+        public float MaxHp 
         {
             get { return maxHp; }
             set
@@ -76,12 +76,29 @@ namespace CshapDungeon_ver6
 
         public void ShowStatus()
         {
+            Console.Write("\n");
+            Console.WriteLine($"[플레이어의 능력치]");
             Console.WriteLine($"이름 : {name}");
             Console.WriteLine($"직업 : [{job}]");
             Console.WriteLine($"레벨 : {level}");
             Console.WriteLine($"체력 : {curHp} / {maxHp}");
             Console.WriteLine($"공격력 : {curAtk}/ {maxAtk}");
             Console.WriteLine($"방어력 : {curDef} / {maxDef}");
+            Console.WriteLine($"골드 : {haveGold}G");
+            Console.Write("\n");
+        }
+        public void ShowStatus(int damage)
+        {
+            Console.Write("\n");
+            Console.WriteLine($"[플레이어의 능력치]");
+            Console.WriteLine($"이름 : {name}");
+            Console.WriteLine($"직업 : [{job}]");
+            Console.WriteLine($"레벨 : {level}");
+            Console.WriteLine($"체력 : {curHp} / {maxHp} -({damage})");
+            Console.WriteLine($"공격력 : {curAtk}/ {maxAtk}");
+            Console.WriteLine($"방어력 : {curDef} / {maxDef}");
+            Console.WriteLine($"골드 : {haveGold}G");
+            Console.Write("\n");
         }
 
         public void AddStat(StatType statType, int stat)
@@ -102,20 +119,6 @@ namespace CshapDungeon_ver6
 
         public Player()
         {
-            name = this.name;
-            job = this.job;
-
-            level = this.level;
-            exp = this.exp;
-
-            curHp = this.curHp;
-            curAtk = this.curAtk;
-            curDef = this.curDef;
-            maxHp = this.maxHp;
-            maxAtk = this.maxAtk;
-            maxDef = this.maxDef;
-            haveGold = this.haveGold;
-            inventory = this.inventory;
         }
 
         public Player(Player player)

@@ -197,7 +197,7 @@
             void LineTest()
             {
                 Console.WriteLine("콘솔의 호출 횟수를 확인합니다.");
-            }
+            }//LineTest
 
             void GameManager(PlaceType place)
             {
@@ -230,14 +230,14 @@
                         break;
                 }
                 LineTap(15);
-            }
+            } //GameLogic
 
             void Intro() // 이름 선택
             {
                 Console.WriteLine("스파르타 던전에 오신 것을 환영합니다.");
                 Console.WriteLine("플레이어의 이름을 선택해주십시오.");
                 Console.WriteLine("\n");
-            }
+            } //Intro
 
             void NameSelect()
             {
@@ -283,7 +283,7 @@
                         }
                     }
                 }
-            }
+            } //NameSelect
 
             void Village()
             {
@@ -350,7 +350,7 @@
                             continue;
                     }
                 }
-            }
+            } //Village
 
             void Status()
             {
@@ -398,7 +398,7 @@
                     }
                     return;
                 }
-            }
+            } //Status
 
             void Inventory()
             {
@@ -427,8 +427,6 @@
                     user.inventoryItem[i].ItemInfo();
                 }
                 LineTap(2);
-
-
 
                 //선택지
                 Console.WriteLine("1. [장착하기]");
@@ -467,7 +465,7 @@
                     }
                     return;
                 }
-            }
+            } //Inventory
 
             void EquipInventory()
             {

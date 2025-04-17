@@ -18,19 +18,23 @@ namespace CshapDungeon_ver6
     {
         //생성자
         public Player user = new Player(); 
-        bool _isGameOver = false;
         PlaceType place = new PlaceType();
         ItemManager item = new ItemManager();
 
         Village village = new Village();
         Status status = new Status();
+        OpenInventory inventory = new OpenInventory();
+        Dungeon dungeon = new Dungeon();
         Shop shop = new Shop();
+        Rest rest = new Rest();
         public DataManager data;
 
         public void Login()
         {
+            Init();
             NameSelect();
             JobSelect();
+            Console.Clear();
         }
 
         public void NameSelect()
@@ -68,9 +72,8 @@ namespace CshapDungeon_ver6
                     {
                         case 1:
                             Console.WriteLine(">> 이름을 선택하셨습니다.");
-                            LineTap(15);
                             return;
-                            break;
+
                         case 2:
                             Console.WriteLine(">> 이름을 다시 선택해주세요");
                             Console.WriteLine("\n");
@@ -86,12 +89,12 @@ namespace CshapDungeon_ver6
 
         public void JobSelect()
         {
-            
-                Console.WriteLine("직업을 선택해주세요.");
-                Console.WriteLine("\n");
-                Console.WriteLine("[1. 전사]");
-                Console.WriteLine("[2. 마법사]");
-                Console.WriteLine("[3. 궁수]");
+            Console.WriteLine("\n");
+            Console.WriteLine("직업을 선택해주세요.");
+            Console.WriteLine("\n");
+            Console.WriteLine("[1. 전사]");
+            Console.WriteLine("[2. 마법사]");
+            Console.WriteLine("[3. 궁수]");
 
             while (true)
             {
@@ -164,7 +167,7 @@ namespace CshapDungeon_ver6
 
         public void StartGame()
         {
-            
+            Console.Clear();
             switch (place)
             {
                 case PlaceType.Village:
@@ -179,26 +182,33 @@ namespace CshapDungeon_ver6
                 case PlaceType.Shop:
                     shop.StartShop(out place, ref user);
                     //Shop();
-
                     break;
-
+                    
                 case PlaceType.Inventory:
+                    inventory.StartOpenInventory(out place, ref user);
                     //Inventory();
 
                     break;
                 case PlaceType.Rest:
+                    rest.StartRest(out place, ref user);
                     //Rest();
 
                     break;
                 case PlaceType.Dungeon:
+                    dungeon.StartDungeon(out place, ref user);
                     //Dungeon();
                     break;
             }
-            LineTap(15);
+            GameOver();
 
-            if (_isGameOver == true)
+        }
+
+        public void GameOver()
+        {
+            if (user.curHp < 0)
             {
                 Console.WriteLine("게임이 종료되었습니다.");
+                Login();
             }
         }
 
@@ -207,6 +217,7 @@ namespace CshapDungeon_ver6
             place = PlaceType.Village;
             shop.ShopReset(item.allItem);
             user.job = Job.NotJob;
+            user = new Player();
         }
         
 
