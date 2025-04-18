@@ -99,6 +99,7 @@ namespace CshapDungeon_ver6
 
             while (true)
             {
+                Console.Write(">> ");
                 check = TextInput();
 
                 place = PlaceType.Shop;

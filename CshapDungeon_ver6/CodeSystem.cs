@@ -27,7 +27,7 @@ namespace CshapDungeon_ver6
             int check;
             try
             {
-                //Console.Write(">> ");
+                Console.Write(">> ");
                 check = int.Parse(Console.ReadLine());
                 return check;
             }
