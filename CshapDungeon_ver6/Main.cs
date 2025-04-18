@@ -22,6 +22,7 @@ namespace CshapDungeon_ver6
         {
             var code = new CodeSystem();
             var gameLogic = new GameLogic();
+            var itemManager = new ItemManager();
 
             LoadData(ref gameLogic);
             
@@ -29,6 +30,9 @@ namespace CshapDungeon_ver6
             {
                 gameLogic.Login(); 
             }
+            gameLogic.user.inventory.ItemAdd(new Item(itemManager.allItem[0]));
+            gameLogic.user.inventory.ItemAdd(new Item(itemManager.allItem[1]));
+            gameLogic.user.inventory.ItemAdd(new Item(itemManager.allItem[2]));
 
             PlaceType place = new PlaceType();
 
@@ -36,99 +40,80 @@ namespace CshapDungeon_ver6
             {
                 gameLogic.StartGame();
                 SaveData(ref gameLogic);
-                
             }
+
 
             static void SaveData(ref GameLogic gameLogic)
             {
-                string filePath = "./Player.json";
-                var testList = new Player(gameLogic.user);
-                var jsonSerializeTestList = JsonConvert.SerializeObject(testList);
-                File.WriteAllText(filePath, jsonSerializeTestList);
+                string FilePath = "./ItemData.json"; // 파일경로설정
+                string FilePathPlayer = "./PlayerData.json";
+                Console.WriteLine($"{FilePath}에 저장됨");
+                try
+                {
+                    var testList = new List<Item>();
+                    for(int i=0; i<gameLogic.user.inventory.Item.Count; i++)
+                    {
+                        testList.Add(new Item(gameLogic.user.inventory.Item[i]));
+                    }
+                    var jsonSerializeList = JsonConvert.SerializeObject(testList);
+                    var testListPlayer = new Player
+                    {
+                        name = gameLogic.user.name,
+                        job = gameLogic.user.job,
+                        level = gameLogic.user.level,
+                        exp = gameLogic.user.exp,
+                        curHp = gameLogic.user.curHp,
+                        curAtk = gameLogic.user.curAtk,
+                        curDef = gameLogic.user.curDef,
+                        maxHp = gameLogic.user.maxHp,
+                        maxAtk = gameLogic.user.maxAtk,
+                        maxDef = gameLogic.user.maxDef,
+                        haveGold = gameLogic.user.haveGold
+                    };
+                    var jsonSerializeListPlayer = JsonConvert.SerializeObject(testListPlayer);
+                    //string json = JsonConvert.SerializeObject(player, Newtonsoft.Json.Formatting.Indented);
+                    File.WriteAllText(FilePathPlayer, jsonSerializeListPlayer);
+                    File.WriteAllText(FilePath, jsonSerializeList);
+                    
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error saving data: {ex.Message}");
+                }
             }
 
             static void LoadData(ref GameLogic gameLogic)
             {
-                string filePath = "./Player.json";
-                if (File.Exists(filePath))
+                string FilePath = "./ItemData.json";
+                string FilePathPlayer = "./PlayerData.json"; // 데이터 저장한 파일 경로 설정
+                Console.WriteLine($"{FilePath}에서 불러오기 시도");
+                try
                 {
-                    string json = File.ReadAllText(filePath);
-                    var jsonDeserializeList = JsonConvert.DeserializeObject<Player>(json);
-                    gameLogic.user = jsonDeserializeList;
+                    if (File.Exists(FilePath))
+                    {
+                        string json = File.ReadAllText(FilePath);
+                        string json2 = File.ReadAllText(FilePathPlayer);
+                        List<Item> jsonDeserializeList = JsonConvert.DeserializeObject<List<Item>>(json);
+                        var jsonDeserializeList2 = JsonConvert.DeserializeObject<Player>(json2);
+
+                        gameLogic.user = jsonDeserializeList2;
+                        for (int i = 0; i < jsonDeserializeList.Count; i++)
+                        {
+                            gameLogic.user.inventory.Item.Add(new Item(jsonDeserializeList[i]));
+                        }
+                        
+                    }
+                    else
+                    {
+                        // 파일 미 존재 시 기본 데이터 설정
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error Load data: {ex.Message}");
+                    // JsonConver 오류 발생 시 기본 데이터 설정 
                 }
             }
-
-            //static void SaveData(ref GameLogic gameLogic)
-            //{
-            //    string FilePath = "./ItemData.json"; // 파일경로설정
-            //    string FilePathPlayer = "./PlayerData.json";
-            //    Console.WriteLine($"{FilePath}에 저장됨");
-            //    try
-            //    {
-            //        var testList = new List<Item>();
-            //        for(int i=0; i<gameLogic.user.inventory.Item.Count; i++)
-            //        {
-            //            testList.Add(new Item(gameLogic.user.inventory.Item[i]));
-            //        }
-            //        var jsonSerializeList = JsonConvert.SerializeObject(testList);
-            //        var testListPlayer = new Player
-            //        {
-            //            name = gameLogic.user.name,
-            //            job = gameLogic.user.job,
-            //            level = gameLogic.user.level,
-            //            exp = gameLogic.user.exp,
-            //            curHp = gameLogic.user.curHp,
-            //            curAtk = gameLogic.user.curAtk,
-            //            curDef = gameLogic.user.curDef,
-            //            maxHp = gameLogic.user.maxHp,
-            //            maxAtk = gameLogic.user.maxAtk,
-            //            maxDef = gameLogic.user.maxDef,
-            //            haveGold = gameLogic.user.haveGold
-            //        };
-            //        var jsonSerializeListPlayer = JsonConvert.SerializeObject(testListPlayer);
-            //        //string json = JsonConvert.SerializeObject(player, Newtonsoft.Json.Formatting.Indented);
-            //        File.WriteAllText(FilePathPlayer, jsonSerializeListPlayer);
-            //        File.WriteAllText(FilePath, jsonSerializeList);
-                    
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Console.WriteLine($"Error saving data: {ex.Message}");
-            //    }
-            //}
-
-            //static void LoadData(ref GameLogic gameLogic)
-            //{
-            //    string FilePath = "./ItemData.json";
-            //    string FilePathPlayer = "./PlayerData.json"; // 데이터 저장한 파일 경로 설정
-            //    Console.WriteLine($"{FilePath}에서 불러오기 시도");
-            //    try
-            //    {
-            //        if (File.Exists(FilePath))
-            //        {
-            //            string json = File.ReadAllText(FilePath);
-            //            string json2 = File.ReadAllText(FilePathPlayer);
-            //            List<Item> jsonDeserializeList = JsonConvert.DeserializeObject<List<Item>>(json);
-            //            var jsonDeserializeList2 = JsonConvert.DeserializeObject<Player>(json2);
-
-            //            gameLogic.user = jsonDeserializeList2;
-            //            for (int i = 0; i < jsonDeserializeList.Count; i++)
-            //            {
-            //                gameLogic.user.inventory.Item.Add(new Item(jsonDeserializeList[i]));
-            //            }
-                        
-            //        }
-            //        else
-            //        {
-            //            // 파일 미 존재 시 기본 데이터 설정
-            //        }
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Console.WriteLine($"Error Load data: {ex.Message}");
-            //        // JsonConver 오류 발생 시 기본 데이터 설정 
-            //    }
-            //}
         }
     }
 }

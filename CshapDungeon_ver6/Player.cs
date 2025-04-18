@@ -55,17 +55,6 @@ namespace CshapDungeon_ver6
 
         public Inventory inventory = new Inventory();
 
-        public void Quest()
-        {
-            inventory.SetStatChangedCallback((ItemAtk, ItemHp, ItemDef) =>
-            {
-                MaxHp += ItemHp;
-                MaxAtk += ItemAtk;
-                MaxDef += ItemDef;
-            });
-        }
-
-
         public void DungeonClear()
         {
             exp += 1;
@@ -91,10 +80,10 @@ namespace CshapDungeon_ver6
             Console.WriteLine($"[플레이어의 능력치]");
             Console.WriteLine($"이름 : {name}");
             Console.WriteLine($"직업 : [{job}]");
-            Console.WriteLine($"레벨 : {level} / exp:{exp}");
-            Console.WriteLine($"체력 : {curHp} / {maxHp} (+{inventory.itemHp})");
-            Console.WriteLine($"공격력 : {curAtk}/ {maxAtk} (+{inventory.itemAtk})");
-            Console.WriteLine($"방어력 : {curDef} / {maxDef} (+{inventory.itemDef})");
+            Console.WriteLine($"레벨 : {level}");
+            Console.WriteLine($"체력 : {curHp} / {maxHp}");
+            Console.WriteLine($"공격력 : {curAtk}/ {maxAtk}");
+            Console.WriteLine($"방어력 : {curDef} / {maxDef}");
             Console.WriteLine($"골드 : {haveGold}G");
             Console.Write("\n");
         }
@@ -128,19 +117,12 @@ namespace CshapDungeon_ver6
             }
         }
 
-        public void Init()
-        {
-            Quest();
-        }
-
         public Player()
         {
-            Init();
         }
 
         public Player(Player player)
         {
-            Init();
             name = player.name;
             job = player.job;
 

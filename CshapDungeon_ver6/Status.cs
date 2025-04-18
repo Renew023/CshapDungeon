@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CshapDungeon_ver6
 {
-    internal class Status : CodeSystem
+    internal class Status
     {
         public void Show(ref Player user)
         {
@@ -34,8 +34,8 @@ namespace CshapDungeon_ver6
             int check = 0;
             while (true)
             {
-
-                check = TextInput();
+                Console.Write(">> ");
+                check = int.Parse(Console.ReadLine());
 
                 switch (check)
                 {

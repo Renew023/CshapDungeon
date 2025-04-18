@@ -33,7 +33,6 @@ namespace CshapDungeon_ver6
         {
             Init();
             NameSelect();
-            Console.Clear();
             JobSelect();
             Console.Clear();
         }
@@ -66,7 +65,8 @@ namespace CshapDungeon_ver6
 
                 while (check != 2)
                 {
-                    check = TextInput();
+                    Console.Write(">> ");
+                    check = int.Parse(Console.ReadLine());
 
                     switch (check)
                     {
@@ -81,7 +81,6 @@ namespace CshapDungeon_ver6
 
                         default:
                             Console.WriteLine(">> 값을 다시 입력해주십시오");
-                            Console.WriteLine("\n");
                             continue;
                     }
                 }
@@ -171,10 +170,13 @@ namespace CshapDungeon_ver6
             Console.Clear();
             switch (place)
             {
+<<<<<<< HEAD
+=======
                 case PlaceType.Login:
                     Login();
                     break;
 
+>>>>>>> parent of 2c745d6 (코드 수정 최종)
                 case PlaceType.Village:
                     village.StartVillage(out place, ref user);
                     break;
@@ -205,7 +207,7 @@ namespace CshapDungeon_ver6
                     break;
             }
             GameOver();
-            Thread.Sleep(500);
+
         }
 
         public void GameOver()
@@ -213,18 +215,16 @@ namespace CshapDungeon_ver6
             if (user.curHp < 0)
             {
                 Console.WriteLine("게임이 종료되었습니다.");
-                Console.Clear();
                 Login();
             }
         }
 
         public void Init()
         {
-            user = new Player();
             place = PlaceType.Village;
-            user.job = Job.NotJob;
-            shop = new Shop();
             shop.ShopReset(item.allItem);
+            user.job = Job.NotJob;
+            user = new Player();
         }
         
 

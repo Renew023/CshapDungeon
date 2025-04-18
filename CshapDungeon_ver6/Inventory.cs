@@ -10,57 +10,9 @@ namespace CshapDungeon_ver6
     {
         public List<Item> Item = new List<Item>();
         public Item?[] equipItem = new Item[7];
-        public int itemAtk;
-        public int itemDef;
-        public int itemHp;
-
-        public int ItemAtk
-        {
-            get
-            {
-                return itemAtk;
-            }
-            set
-            {
-                statChangedCallback?.Invoke(value-itemAtk, 0, 0);
-                itemAtk = value;
-            }
-        }
-
-        public int ItemHp
-        {
-            get
-            {
-                return itemHp;
-            }
-            set
-            {
-                statChangedCallback?.Invoke(0, value-itemHp, 0);
-                itemAtk = value;
-            }
-        }
-
-        public int ItemDef
-        {
-            get
-            {
-                return itemDef;
-            }
-            set
-            {
-                statChangedCallback?.Invoke(0, 0, value-itemDef);
-                itemDef = value;
-            }
-        }
-
-        private Action<float, float, float> statChangedCallback;
-
-        public void SetStatChangedCallback(Action<float, float, float> callback)
-        {
-            statChangedCallback = callback;
-        }
-
-
+        public int itemAtk = 0;
+        public int itemHp = 0;
+        public int itemDef = 0;
 
         public Inventory()
         {
@@ -122,13 +74,13 @@ namespace CshapDungeon_ver6
                 switch(item.itemStatType)
                 {
                     case StatType.Hp:
-                        ItemHp += itemStat;
+                        itemHp += itemStat;
                         break;
                     case StatType.Atk:
-                        ItemAtk += itemStat;
+                        itemAtk += itemStat;
                         break;
                     case StatType.Def:
-                        ItemDef += itemStat;
+                        itemDef += itemStat;
                         break;
                 }
                  //해당 능력치를 플레이어에게 부여한다.\

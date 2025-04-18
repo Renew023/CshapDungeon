@@ -7,7 +7,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace CshapDungeon_ver6
 {
-    internal class Dungeon : CodeSystem
+    internal class Dungeon()
     {
         int Easy = 5;
         int EasyGold = 1000;
@@ -59,7 +59,8 @@ namespace CshapDungeon_ver6
                 Console.WriteLine("원하시는 행동을 선택해주세요.");
                 Console.Write(">> ");
 
-                int num = TextInput();
+                int num = int.Parse(Console.ReadLine());
+                Console.Clear();
 
                 switch ((DungeonStage)num)
                 {
@@ -135,16 +136,13 @@ namespace CshapDungeon_ver6
 
             if (isClear == true)
             {
-                //기능먼저
+                Console.WriteLine("[던전 클리어]");
                 Random rand = new Random();
                 damage = rand.Next(20, 35) + 1 - (def - 5);
                 user.curHp -= damage;
-                GameOver(ref user, (int)damage, out place);
-                if (place == PlaceType.Village)
-                { return; }
 
-                //기능 후
-                Console.WriteLine("[던전 클리어]");
+                GameOver(ref user, (int)damage, out place);
+                if (place == PlaceType.Village) return;
 
                 int percent = rand.Next(10, 20); // 1, 2
                 user.haveGold = clearGold * (int)(atk * percent * 0.1f);
@@ -152,11 +150,9 @@ namespace CshapDungeon_ver6
                 user.ShowStatus((int)damage);
 
                 Console.Write("\n");
-                
+                user.DungeonClear();
                 Console.WriteLine($"보상 : {clearGold}");
                 Console.Write("\n");
-                Thread.Sleep(500);
-                user.DungeonClear();
             }
 
             Console.WriteLine("던전을 더 들어가시겠습니까?");
@@ -168,8 +164,9 @@ namespace CshapDungeon_ver6
             while (true)
             {
                 Console.WriteLine("원하시는 행동을 선택해주세요.");
-
-                int num = TextInput();
+                Console.Write(">> ");
+                int num = int.Parse(Console.ReadLine());
+                Console.Clear();
 
                 switch (num)
                 {
@@ -203,7 +200,7 @@ namespace CshapDungeon_ver6
                 place = PlaceType.Village;
                 return;
             }
-            place = PlaceType.Dungeon;
+            place = PlaceType.Village;
         }
     }
 }
