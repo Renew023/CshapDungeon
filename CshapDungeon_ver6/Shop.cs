@@ -12,10 +12,11 @@ namespace CshapDungeon_ver6
         Buy,
         Sell,
     }
-    internal class Shop
+    internal class Shop : CodeSystem
     {
         public List<Item> shopItem = new List<Item>();
         ShopState state = ShopState.Exit;
+        
         public void ShopReset(Item[] item)
         {
             Random rand = new Random();
@@ -28,6 +29,23 @@ namespace CshapDungeon_ver6
 
         public void Show(ref Player user)
         {
+            switch (state)
+            {
+                case ShopState.Exit:
+                case ShopState.Buy:
+                    Console.WriteLine("[상점 아이템 목록]");
+                    ShopOpen();
+                    Console.Write("\n");
+                    break;
+
+                case ShopState.Sell:
+                    Console.WriteLine("[보유 아이템 목록]");
+                    user.inventory.OpenItem();
+                    Console.Write("\n");
+                    break;
+
+            }
+            
             switch (state)
             {
                 case ShopState.Exit:
@@ -50,23 +68,6 @@ namespace CshapDungeon_ver6
 
             Console.WriteLine($"보유 금액 : {user.haveGold}G");
             Console.Write("\n");
-            switch (state)
-            {
-                case ShopState.Exit:
-                case ShopState.Buy:
-                    Console.WriteLine("[상점 아이템 목록]");
-                    ShopOpen();
-                    Console.Write("\n");
-                    break;
-
-                case ShopState.Sell:
-                    Console.WriteLine("[보유 아이템 목록]");
-                    user.inventory.OpenItem();
-                    Console.Write("\n");
-                    break;
-
-            }
-            
         }
 
         public void Section()
@@ -99,7 +100,8 @@ namespace CshapDungeon_ver6
             while (true)
             {
                 Console.Write(">> ");
-                check = int.Parse(Console.ReadLine());
+                check = TextInput();
+
                 place = PlaceType.Shop;
                 switch (state)
                 {

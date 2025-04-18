@@ -26,12 +26,13 @@ namespace CshapDungeon_ver6
 
     public enum PlaceType //VillageSection
     {
-        Village, //마을 
-        Inventory, //인벤토리
-        Shop, //상점
-        Status, //능력치 확인
-        Dungeon, //던전입장
-        Rest //휴식하기
+        Status = 1, //능력치 확인
+        Inventory = 2, //인벤토리
+        Shop = 3, //상점
+        Rest = 4, //휴식하기
+        Dungeon = 5, //던전입장
+        Login = 9, // 게임시작
+        Village = 0 //마을 
     }
 
     //장착개선에 쓰일 코드
