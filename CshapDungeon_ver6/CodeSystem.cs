@@ -8,7 +8,6 @@ namespace CshapDungeon_ver6
 {
     //작법 도움 주는 코드
     
-    
     internal class CodeSystem
     {
         public void LineTap(int line)

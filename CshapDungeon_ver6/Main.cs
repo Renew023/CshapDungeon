@@ -18,6 +18,7 @@ namespace CshapDungeon_ver6
         // 뜯어고칠 순서는 순차적으로 이름은 가독성을 높이기 위해 쓰지 않을 Enum형으로 하나 명시해주고
         // 공통 설명을 void로 진행
 
+
         static void Main(string[] args)
         {
             var code = new CodeSystem();

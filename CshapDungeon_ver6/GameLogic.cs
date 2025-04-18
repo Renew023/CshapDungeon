@@ -171,8 +171,12 @@ namespace CshapDungeon_ver6
             switch (place)
             {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
                 case PlaceType.Login:
+=======
+                case PlaceType.Reset:
+>>>>>>> parent of d10152d (Revert "코드 수정 최종")
                     Login();
                     break;
 
