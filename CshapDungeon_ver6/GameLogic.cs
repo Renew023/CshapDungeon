@@ -171,7 +171,7 @@ namespace CshapDungeon_ver6
             Console.Clear();
             switch (place)
             {
-                case PlaceType.Reset:
+                case PlaceType.Login:
                     Login();
                     break;
 

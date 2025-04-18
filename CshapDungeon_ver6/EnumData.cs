@@ -31,7 +31,7 @@ namespace CshapDungeon_ver6
         Shop = 3, //상점
         Rest = 4, //휴식하기
         Dungeon = 5, //던전입장
-        Reset = 9, // 게임시작
+        Login = 9, // 게임시작
         Village = 0 //마을 
     }
 
