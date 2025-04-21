@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CshapDungeon_ver6
 {
-    internal class Village 
+    internal class Village : CodeSystem
     {
         public void Show()
         {
@@ -22,6 +22,8 @@ namespace CshapDungeon_ver6
             Console.WriteLine("3. [상점]");
             Console.WriteLine("4. [휴식처]");
             Console.WriteLine("5. [던전 입장]");
+            Console.WriteLine("9. [계정 초기화]");
+            Console.WriteLine("0. [게임 종료]");
             Console.Write("\n");
         }
 
@@ -32,39 +34,50 @@ namespace CshapDungeon_ver6
 
             while (true)
             {
-                Console.Write(">> ");
-                check = int.Parse(Console.ReadLine());
+                check = TextInput();
 
-                switch (check)
+                if (check == 0)
                 {
-                    case 1:
+                    Environment.Exit(0);
+                }
+
+                switch ((PlaceType)check)
+                {
+                    case PlaceType.Reset:
+                        Console.WriteLine(">> [계정초기화]를 선택하셨습니다.");
+                        Console.Write("\n");
+
+                        place = PlaceType.Reset;
+                        return;
+
+                    case PlaceType.Status:
                         Console.WriteLine(">> [상태보기]를 선택하셨습니다.");
                         Console.Write("\n");
 
                         place = PlaceType.Status;
                         return;
 
-                    case 2:
+                    case PlaceType.Inventory:
                         Console.WriteLine(">> [인벤토리]를 선택하셨습니다.");
                         Console.Write("\n");
 
                         place = PlaceType.Inventory;
                         return;
 
-                    case 3:
+                    case PlaceType.Shop:
                         Console.WriteLine(">> [상점]을 선택하셨습니다.");
                         Console.Write("\n");
 
                         place = PlaceType.Shop;
                         return;
 
-                    case 4:
+                    case PlaceType.Rest:
                         Console.WriteLine(">> [휴식처]을 선택하셨습니다.");
                         Console.Write("\n");
 
                         place = PlaceType.Rest;
                         return;
-                    case 5:
+                    case PlaceType.Dungeon:
                         Console.WriteLine(">> [던전입장]을 선택하셨습니다.");
                         Console.Write("\n");
 
@@ -83,8 +96,8 @@ namespace CshapDungeon_ver6
         }
         public void StartVillage(out PlaceType place, ref Player user)
         {
-            Show();
             Section();
+            Show();
             Select(out place);
         }
     }

@@ -26,14 +26,6 @@ namespace CshapDungeon_ver6
 
     public enum PlaceType //VillageSection
     {
-<<<<<<< HEAD
-        Village, //마을 
-        Inventory, //인벤토리
-        Shop, //상점
-        Status, //능력치 확인
-        Dungeon, //던전입장
-        Rest //휴식하기
-=======
         Status = 1, //능력치 확인
         Inventory = 2, //인벤토리
         Shop = 3, //상점
@@ -41,7 +33,6 @@ namespace CshapDungeon_ver6
         Dungeon = 5, //던전입장
         Reset = 9, // 게임시작
         Village = 0 //마을 
->>>>>>> parent of 2c745d6 (코드 수정 최종)
     }
 
     //장착개선에 쓰일 코드

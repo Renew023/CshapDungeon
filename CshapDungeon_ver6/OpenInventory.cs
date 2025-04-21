@@ -8,8 +8,8 @@ namespace CshapDungeon_ver6
 {
     enum InventoryState
     {
-        Exit,
-        Equip
+        Exit = 0,
+        Equip = 1
     }
 
     internal class OpenInventory : CodeSystem
@@ -35,6 +35,7 @@ namespace CshapDungeon_ver6
                 case InventoryState.Equip:
                     Console.WriteLine("[[아이템 장착]]");
                     Console.WriteLine("원하는 아이템을 장착할 수 있습니다.");
+                    Console.Write("\n");
                     break;
             }
             //플레이어의 정보 : 장착 아이템
@@ -69,7 +70,7 @@ namespace CshapDungeon_ver6
                     break;
                 case InventoryState.Equip:
                     Console.WriteLine("장착하고 싶은 번호의 아이템을 입력해주세요");
-                    Console.WriteLine("0. [나가기");
+                    Console.WriteLine("0. [나가기]");
                     Console.Write("\n");
                     break;
 
@@ -85,11 +86,10 @@ namespace CshapDungeon_ver6
 
             while (true)
             {
-                Console.Write(">> ");
-                int check = int.Parse(Console.ReadLine());
+                int check = TextInput();
                 place = PlaceType.Inventory;
 
-                switch (state)
+                switch ((InventoryState)state)
                 {
                     case InventoryState.Exit:
 
