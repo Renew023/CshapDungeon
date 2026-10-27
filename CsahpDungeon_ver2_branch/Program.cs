@@ -12,19 +12,13 @@
 
         static int NameSelect()
         {
-            //내용 입력
-            string Name = Console.ReadLine();
+            string Name = Console.ReadLine();//내용 입력
+			Console.WriteLine("\n");
+            Console.WriteLine($"플레이어가 입력한 이름은 \"{Name}\" 입니다."); //내용 확인
+			Console.WriteLine("\n");
+            Console.WriteLine("1. 저장");//선택지
+			Console.WriteLine("2. 취소");
             Console.WriteLine("\n");
-
-            //내용 확인
-            Console.WriteLine($"플레이어가 입력한 이름은 \"{Name}\" 입니다.");
-            Console.WriteLine("\n");
-
-            //선택지
-            Console.WriteLine("1. 저장");
-            Console.WriteLine("2. 취소");
-            Console.WriteLine("\n");
-
             Console.WriteLine("원하시는 행동을 입력해주세요.");
 
             while (true)
@@ -52,18 +46,15 @@
             }
         }
 
-        static void Village() // 겹치는 구문이 있는데 클래스로 상속 받으면 처리하기 편할듯
+        static void Village() // 겹치는 구문이 있는데 클래스로 상속 받으면 처리하기 편할듯 // 팀프로젝트에서는 Start(출력부문)와 Input(입력부문)으로 나눔.
         {
             Console.WriteLine("스파르타 마을에 오신 여러분 환영합니다.");
             Console.WriteLine("이곳에서 던전으로 들어가기전 활동을 할수 있습니다.");
-            Console.Write("\n");
-
-            //Enum으로 나중에 변환 가능할 듯. villageList
-            Console.WriteLine("1. 상태 보기");
-            Console.WriteLine("2. 인벤토리");
+            Console.WriteLine("\n");
+            Console.WriteLine("1. 상태 보기")  //Enum으로 나중에 변환 가능할 듯. villageList
+			Console.WriteLine("2. 인벤토리");
             Console.WriteLine("3. 상점");
-            Console.Write("\n");
-
+            Console.WriteLine("\n");
             Console.WriteLine("원하시는 행동을 입력해주세요.");
 
             while (true)
@@ -101,35 +92,27 @@
 
         static void Inventory()
         {
-            //창 설명
-            Console.WriteLine("인벤토리");
-            Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
-            Console.Write("\n");
+            Console.WriteLine("인벤토리"); //창 설명
+			Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
+            Console.WriteLine("\n");
+            Console.WriteLine("장착중인 아이템");//플레이어의 정보
+			Console.WriteLine("현재 능력치");
+            Console.WriteLine("\n");
+            Console.WriteLine("[아이템 목록]"); //아이템 목록 for, foreach를 통해 아이템 배열이나 리스트 출력.
+			Console.WriteLine("아이템");
+            Console.WriteLine("\n");
+            Console.WriteLine("1. 장착하기"); //선택지
+			Console.WriteLine("0. 나가기");
+            Console.WriteLine("\n");
+            Console.WriteLine("원하시는 행동을 선택해주세요."); //플레이어 입력대기 
 
-            //플레이어의 정보
-            Console.WriteLine("장착중인 아이템");
-            Console.WriteLine("현재 능력치");
-            Console.Write("\n");
-
-            //아이템 목록 for, foreach를 통해 아이템 배열이나 리스트 출력.
-            Console.WriteLine("[아이템 목록]");
-            Console.WriteLine("아이템");
-            Console.Write("\n");
-
-            //선택지
-            Console.WriteLine("1. 장착하기");
-            Console.WriteLine("0. 나가기");
-            Console.Write("\n");
-
-            //플레이어 입력대기
-            Console.WriteLine("원하시는 행동을 선택해주세요.");
-
-            while (true)
+			while (true)
             {
                 Console.Write(">> ");
                 int check = int.Parse(Console.ReadLine());
+				Console.WriteLine("\n");
 
-                switch (check)
+				switch (check)
                 {
                     case 0:
                         Console.WriteLine("나가기를 선택하셨습니다.");
@@ -161,29 +144,20 @@
 
         static void Shop()
         {
-            //창 설명
-            Console.WriteLine("상점");
-            Console.WriteLine("필요한 아이템을 얻을 수 있는 상점입니다");
+            Console.WriteLine("상점"); //창 설명
+			Console.WriteLine("필요한 아이템을 얻을 수 있는 상점입니다");
+            Console.WriteLine("\n");
+            Console.WriteLine("보유 금액 : ");//플레이어의 정보
+			Console.WriteLine("\n");
+            Console.WriteLine("[아이템 목록]"); //상점의 정보
+			Console.WriteLine("아이템");
+            Console.WriteLine("\n");
+            Console.WriteLine("1. 아이템 구매");//선택지
+			Console.WriteLine("0. 나가기");
             Console.Write("\n");
+            Console.WriteLine("원하시는 행동을 선택해주세요."); //플레이어 입력대기
 
-            //플레이어의 정보
-            Console.WriteLine("보유 금액 : ");
-            Console.Write("\n");
-
-            //상점의 정보
-            Console.WriteLine("[아이템 목록]");
-            Console.WriteLine("아이템");
-            Console.Write("\n");
-
-            //선택지
-            Console.WriteLine("1. 아이템 구매");
-            Console.WriteLine("0. 나가기");
-            Console.Write("\n");
-
-            //플레이어 입력대기
-            Console.WriteLine("원하시는 행동을 선택해주세요.");
-
-            while (true)
+			while (true)
             {
                 Console.Write(">> ");
                 int check = int.Parse(Console.ReadLine());
@@ -191,9 +165,8 @@
                 switch (check)
                 {
                     case 1:
-                        Console.WriteLine("아이템 구매를 선택하셨습니다.");
-                        Console.Write("\n");
-                        //ItemBuy(); 나중에 아이템 리스트 만들고 제작 예정
+                        Console.WriteLine("아이템 구매를 선택하셨습니다."); //ItemBuy(); 나중에 아이템 리스트 만들고 제작 예정
+						Console.Write("\n");
                         break;
                     case 0:
                         Console.WriteLine("나가기를 선택하셨습니다.");
@@ -210,34 +183,24 @@
         }
 
         //static void ItemBuy()
-        //{
-
-        //}
 
         static void Status()
         {
-            //창 설명
-            Console.WriteLine("상태 보기");
-            Console.WriteLine("캐릭터의 정보가 표시됩니다.");
-            Console.Write("\n");
-
-            //플레이어의 정보(클래스로 바꿀 예정)
-            Console.WriteLine("레벨");
-            Console.WriteLine("직업");
+            Console.WriteLine("상태 보기"); //창 설명
+			Console.WriteLine("캐릭터의 정보가 표시됩니다.");
+            Console.WriteLine("\n");
+            Console.WriteLine("레벨"); //플레이어의 정보(클래스로 바꿀 예정)
+			Console.WriteLine("직업"); 
             Console.WriteLine("공격력");
             Console.WriteLine("방어력");
             Console.WriteLine("체력");
             Console.WriteLine("Gold");
-            Console.Write("\n");
+            Console.WriteLine("\n");
+            Console.WriteLine("0. 나가기"); //선택지
+			Console.WriteLine("\n");
+            Console.WriteLine("원하시는 행동을 선택해주세요."); //플레이어 입력대기
 
-            //선택지
-            Console.WriteLine("0. 나가기");
-            Console.Write("\n");
-
-            //플레이어 입력대기
-            Console.WriteLine("원하시는 행동을 선택해주세요.");
-
-            while (true)
+			while (true)
             {
                 Console.Write(">> ");
                 int check = int.Parse(Console.ReadLine());
@@ -271,8 +234,6 @@
 
             Village();
 
-
-            //Main의 끝
-        }
-    }
+		} //Main의 끝
+	}
 }

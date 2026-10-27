@@ -54,7 +54,7 @@
 
             public void ItemInfo()
             {
-                if(isEquip == true)
+                if(isEquip == true) //착용 여부
                 {
                     Console.Write("[E] ");
                 }
@@ -92,8 +92,6 @@
                 }
             }
         }
-
-
         
         //static void Equip()
         //{
@@ -103,7 +101,6 @@
         //아이템은 중복 장착이 가능하며, 장착한 아이템은 Enum 또는 Struct status에 반영
         //}
 
-        
 
         static void Main(string[] args)
         {
@@ -119,17 +116,16 @@
 
             Item[] shopItem = new Item[10]; //상점의 아이템 공간 확보
 
-            //for (int i = 0; i < shopItem.Length; i++)
-            //{
-            //    Random rand = new Random();
-            //    int itemIndex = rand.Next(0, allItem.Length);
+            for (int i = 0; i < shopItem.Length; i++)
+            {
+                Random rand = new Random();
+                int itemIndex = rand.Next(0, allItem.Length);
 
-            //    shopItem[i] = new Item(allItem[itemIndex]);
-            //    Console.WriteLine($"{i}번째 아이템은 {shopItem[i].itemName}입니다.");
-            //}
+                shopItem[i] = new Item(allItem[itemIndex]);
+                Console.WriteLine($"{i}번째 아이템은 {shopItem[i].itemName}입니다.");
+            }
 
             Intro();
-
             NameSelect();
 
             while (true)

@@ -11,10 +11,8 @@
             Dungeon, //던전입장
             Rest //휴식하기
         }
-
-        //장착개선에 쓰일 코드
-        public enum ItemType
-        {
+        public enum ItemType //장착개선에 쓰일 코드
+		{
             Head = 0, //머리
             Body, //몸
             Hand, //손
@@ -22,20 +20,20 @@
             Shoes, //발
             Ring, //반지
             NeckRing //목걸이
-        }
-        public enum StatType //4주차
+		} 
+		public enum StatType //4주차
         {
             Hp = 0,     //체력
             Atk = 1,    //공격력
             Def = 2,    //방어력
         }
-
         public enum DungeonStage
         {
             Easy = 1,
             Normal,
             Hard
         }
+
         public class Item
         {
             public string itemName { get; private set; }
@@ -48,7 +46,7 @@
             public bool isEquip = false;
 
             //Item의 값을 참조가 아닌 값형으로 저장하기 위해서는
-            //new Item으로 재선언할 필요가 있는데 데이터를 쉽게 저장하기 위해 선언 함수를 만들어주었다.
+            //new Item으로 재선언할 필요가 있는데 데이터를 쉽게 저장하기 위해 생성자를 만들어주었다.
             public Item(Item item)
             {
                 itemName = item.itemName;
@@ -153,9 +151,9 @@
                 }
                 else
                 {
-                    int itemStat = 0 - item.stat;
+                    int itemStat = 0 - item.stat; //해당 능력치를 플레이어에게서 빼낸다.
 
-                    itemStats[(int)item.itemStatType] += itemStat;
+					itemStats[(int)item.itemStatType] += itemStat;
                     StatReload(item.itemStatType, itemStat);
                     item.isEquip = false;
                 }
@@ -185,7 +183,6 @@
 
             //실행구문
             ShopReset();
-
             Intro();
             NameSelect();
 
@@ -289,21 +286,16 @@
             {
                 Console.WriteLine("[[스파르타 마을]]에 오신 여러분 환영합니다.");
                 Console.WriteLine("이곳에서 던전으로 들어가기전 활동을 할수 있습니다.");
-                Console.Write("\n");
-
-                //Enum으로 나중에 변환 가능할 듯. villageList
-                Console.WriteLine("1. [상태 보기]");
-                Console.WriteLine("2. [인벤토리]");
+                Console.WriteLine("\n");
+                Console.WriteLine("1. [상태 보기]"); //Enum으로 나중에 변환 가능할 듯. villageList
+				Console.WriteLine("2. [인벤토리]");
                 Console.WriteLine("3. [상점]");
                 Console.WriteLine("4. [휴식처]");
                 Console.WriteLine("5. [던전 입장]");
-                Console.Write("\n");
-
+                Console.WriteLine("\n");
                 Console.WriteLine("원하시는 행동을 입력해주세요.");
+                
                 int check = 0;
-
-
-
                 while (true)
                 {
                     Console.Write(">> ");
@@ -357,8 +349,7 @@
                 //창 설명
                 Console.WriteLine("[[상태 보기]]");
                 Console.WriteLine("캐릭터의 정보가 표시됩니다.");
-                Console.Write("\n");
-
+                Console.WriteLine("\n");
                 //플레이어의 정보(클래스로 바꿀 예정)
                 //레벨
                 //직업
@@ -368,16 +359,12 @@
                     Console.WriteLine($"[{Enum.GetName(typeof(StatType), i)}] : {user.curStats[i]} / {user.stats[i]} (+{user.itemStats[i]})");
                 }
                 Console.WriteLine($"[현재 골드] {user.haveGold}");
-                Console.Write("\n");
+                Console.WriteLine("\n");
+                Console.WriteLine("0. 나가기"); //선택지
+				Console.WriteLine("\n");
+                Console.WriteLine("원하시는 행동을 선택해주세요."); //플레이어 입력대기
 
-                //선택지
-                Console.WriteLine("0. 나가기");
-                Console.Write("\n");
-
-                //플레이어 입력대기
-                Console.WriteLine("원하시는 행동을 선택해주세요.");
-
-                while (true)
+				while (true)
                 {
                     Console.Write(">> ");
                     int check = int.Parse(Console.ReadLine());
@@ -402,14 +389,11 @@
 
             void Inventory()
             {
-                //창 설명
-                Console.WriteLine("[[인벤토리]]");
-                Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
+                Console.WriteLine("[[인벤토리]]"); //창 설명
+				Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
                 Console.Write("\n");
-
-                //플레이어의 정보 : 장착 아이템
-                Console.WriteLine("[장착중인 아이템]");
-                for (int i = 0; i < user.inventoryItem.Count; i++)
+                Console.WriteLine("[장착중인 아이템]");  //플레이어의 정보 : 장착 아이템
+				for (int i = 0; i < user.inventoryItem.Count; i++)
                 {
                     if (user.inventoryItem[i].isEquip == true)
                     {
@@ -417,26 +401,21 @@
                     }
                 }
                 LineTap(2);
-
-
-                //보유 아이템
-                Console.WriteLine("[보유 아이템]");
-                for (int i = 0; i < user.inventoryItem.Count; i++)
+                
+                Console.WriteLine("[보유 아이템]"); //보유 아이템
+				for (int i = 0; i < user.inventoryItem.Count; i++)
                 {
                     Console.Write($"[{i + 1}] ");
                     user.inventoryItem[i].ItemInfo();
                 }
                 LineTap(2);
 
-                //선택지
-                Console.WriteLine("1. [장착하기]");
-                Console.WriteLine("0. [나가기]");
+                Console.WriteLine("1. [장착하기]"); //선택지
+				Console.WriteLine("0. [나가기]");
                 Console.Write("\n");
+                Console.WriteLine("원하시는 행동을 선택해주세요."); //플레이어 입력대기
 
-                //플레이어 입력대기
-                Console.WriteLine("원하시는 행동을 선택해주세요.");
-
-                while (true)
+				while (true)
                 {
                     Console.Write(">> ");
                     int check = int.Parse(Console.ReadLine());
@@ -448,17 +427,12 @@
                             Console.Write("\n");
                             place = PlaceType.Village;
                             return;
-                            break;
-
                         case 1:
                             Console.WriteLine(">> [장착하기]를 선택하셨습니다.");
                             Console.Write("\n");
                             EquipInventory();
-
                             //Equip(); 근데 이거는 Item을 리스트에 넣어줘야 되기 때문에 보류;
-
                             break;
-
                         default:
                             Console.WriteLine(">> 값을 다시 입력해주십시오");
                             continue;
